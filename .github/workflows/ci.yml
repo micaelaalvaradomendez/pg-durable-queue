@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: durable_queue
+          POSTGRES_USER: queue
+          POSTGRES_PASSWORD: queue-ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U queue -d durable_queue"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 30
+    env:
+      TEST_DATABASE_URL: postgres://queue:queue-ci-only@localhost:5432/durable_queue?sslmode=disable
+      DATABASE_URL: postgres://queue:queue-ci-only@localhost:5432/durable_queue?sslmode=disable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Vet
+        run: go vet ./...
+      - name: Unit tests
+        run: go test -race ./internal/...
+      - name: Integration tests
+        run: go test -race -count=1 -p 1 ./tests/...
+      - name: End-to-end simulation
+        run: go run ./cmd/simulate
