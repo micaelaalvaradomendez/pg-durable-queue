@@ -78,7 +78,7 @@ stateDiagram-v2
 
 ## Decisiones clave
 
-Las decisiones de diseño del sistema surgen de la resolución formal de 5 incidentes reales de concurrencia y fallas transaccionales en producción (analizados en detalle en [docs/post-mortems.md](docs/post-mortems.md)):
+Las decisiones de diseño del sistema surgen de la resolución formal de incidentes reales de concurrencia, ciclo de vida y fallas transaccionales en producción (analizados en detalle en [docs/post-mortems.md](docs/post-mortems.md)):
 
 | Problema | Decisión | Detalle |
 |---|---|---|
