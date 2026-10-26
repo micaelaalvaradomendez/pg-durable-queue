@@ -7,7 +7,7 @@
 Un operador escanea cientos de pedidos y los reasigna a un depósito. El sistema de depósitos es externo, lento y a veces falla, incluso **después** de aplicar el cambio. La pregunta que responde este repo: *¿qué pasa si algo se cae a la mitad?*
 
 ```bash
-make test       # 4 unitarias + 13 de integración contra PostgreSQL 16
+make test       # 4 unitarias + 15 de integración contra PostgreSQL 16
 make simulate   # 300 pedidos contra un upstream con 30 % de fallas
 ```
 
@@ -106,6 +106,8 @@ Las decisiones de diseño del sistema surgen de la resolución formal de inciden
 | `TestRequeueFromDLQ` | El reproceso manual funciona, queda auditado y no se puede repetir |
 | `TestAttemptLogIsAppendOnly` | El historial de intentos no se puede modificar ni borrar |
 | `TestAPIRequiresAuthentication`, `TestAPIConfirmFlowAndIdempotency` | Sin token no hay acceso; no se puede suplantar al actor por el cuerpo |
+| `TestPostMortemAbortedTransaction25P02` | Reproducción del antipatrón `25P02`: queries sobre TX abortada fallan; rollback + TX aislada resuelve |
+| `TestPostMortemContextWithoutCancelForBackgroundWork` | Tareas de fondo sobreviven al cierre del request HTTP usando `context.WithoutCancel` |
 
 ### Lo que encontraron las pruebas
 
