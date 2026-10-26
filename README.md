@@ -179,7 +179,7 @@ curl -s -H "$T" localhost:8080/batches/<id>
 ├── tests/integration/  # Pruebas contra PostgreSQL real
 └── docs/
     ├── decisiones.md   # 7 ADRs
-    └── post-mortems.md # 5 incidentes de concurrencia y resiliencia
+    └── post-mortems.md # 6 incidentes de concurrencia y resiliencia
 ```
 
 ## Fuera de alcance
