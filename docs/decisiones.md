@@ -1,5 +1,7 @@
 # Decisiones técnicas
 
+> Cada uno de estos ADRs fue motivado por incidentes reales de producción en sistemas distribuidos. Para ver el análisis de causa raíz y la remediación detallada de cada falla (error 25P02, timeouts de Outbox, dependencias nil, pérdidas de contexto y contención de locks), consultá el documento de [Post-Mortems de Concurrencia y Resiliencia](post-mortems.md).
+
 ## ADR-01
 
 **PostgreSQL como cola en lugar de Kafka o Redis.**

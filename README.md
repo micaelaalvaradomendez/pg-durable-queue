@@ -78,6 +78,8 @@ stateDiagram-v2
 
 ## Decisiones clave
 
+Las decisiones de diseño del sistema surgen de la resolución formal de 5 incidentes reales de concurrencia y fallas transaccionales en producción (analizados en detalle en [docs/post-mortems.md](docs/post-mortems.md)):
+
 | Problema | Decisión | Detalle |
 |---|---|---|
 | ¿Hace falta Kafka? | No: PostgreSQL con `SKIP LOCKED` como cola transaccional | [ADR-01](docs/decisiones.md#adr-01) |
@@ -86,6 +88,7 @@ stateDiagram-v2
 | Worker que muere con ítems tomados | Lease con vencimiento + número de intento como token de cercado | [ADR-04](docs/decisiones.md#adr-04) |
 | Reintentos que saturan al upstream | Backoff exponencial con jitter, tope de intentos y DLQ | [ADR-05](docs/decisiones.md#adr-05) |
 | Quién hizo qué | El actor sale del token autenticado, nunca del cuerpo | [ADR-06](docs/decisiones.md#adr-06) |
+| Límites explícitos | 300 por lote, 50 por ciclo de worker, HTTP acotado | [ADR-07](docs/decisiones.md#adr-07) |
 
 ## Qué prueban los tests
 
@@ -172,7 +175,9 @@ curl -s -H "$T" localhost:8080/batches/<id>
 │   ├── fakeupstream/   # Simulador de fallas
 │   └── httpapi/        # Handlers y autenticación
 ├── tests/integration/  # Pruebas contra PostgreSQL real
-└── docs/decisiones.md  # ADRs
+└── docs/
+    ├── decisiones.md   # 7 ADRs
+    └── post-mortems.md # 5 incidentes de concurrencia y resiliencia
 ```
 
 ## Fuera de alcance
